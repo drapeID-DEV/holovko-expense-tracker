@@ -1,5 +1,9 @@
+from expense_tracker.domain.text import normalize_title
+
+
 def main() -> None:
-    print("Expense Tracker 0.1.0 — середовище налаштовано")
+    title = "  Expense   Tracker  "
+    print(normalize_title(title))
 
 
 if __name__ == "__main__":

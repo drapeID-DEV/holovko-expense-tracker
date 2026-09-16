@@ -1,3 +1,5 @@
+from expense_tracker.domain.models import Expense
+from expense_tracker.domain.parsing import to_expense
 from legacy.loader import process
 
 
@@ -10,3 +12,17 @@ def test_legacy_output_is_stable():
 
     assert rows[1][0] == "taxi"
     assert rows[1][2] == 0
+
+
+def test_invalid_amount_becomes_none():
+    expense = to_expense(
+        {
+            "title": "Taxi",
+            "category": "Transport",
+            "amount": "not available",
+            "city": "Lviv",
+        }
+    )
+
+    assert isinstance(expense, Expense)
+    assert expense.amount is None

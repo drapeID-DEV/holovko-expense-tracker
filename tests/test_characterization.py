@@ -1,17 +1,19 @@
+from pathlib import Path
+
 from expense_tracker.domain.models import Expense
 from expense_tracker.domain.parsing import to_expense
-from legacy.loader import process
+from expense_tracker.services.pipeline import load_expenses
 
 
-def test_legacy_output_is_stable():
-    rows = process("data/expenses.json")
+def test_expense_pipeline_output():
+    expenses = load_expenses(Path("data/expenses.json"))
 
-    assert len(rows) == 7
-    assert rows[0][0] == "food"
-    assert rows[0][2] == 500
+    assert len(expenses) == 7
+    assert expenses[0].title == "food"
+    assert expenses[0].amount == 500
 
-    assert rows[1][0] == "taxi"
-    assert rows[1][2] == 0
+    assert expenses[1].title == "taxi"
+    assert expenses[1].amount is None
 
 
 def test_invalid_amount_becomes_none():

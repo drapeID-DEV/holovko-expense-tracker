@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/expense_tracker/__init__.py
+src/expense_tracker/cli.py
+src/expense_tracker.egg-info/PKG-INFO
+src/expense_tracker.egg-info/SOURCES.txt
+src/expense_tracker.egg-info/dependency_links.txt
+src/expense_tracker.egg-info/entry_points.txt
+src/expense_tracker.egg-info/requires.txt
+src/expense_tracker.egg-info/top_level.txt

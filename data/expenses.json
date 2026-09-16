@@ -1,0 +1,74 @@
+[
+    {
+        "title": " Food ",
+        "category": "Groceries",
+        "amount": "500",
+        "city": "Kyiv"
+    },
+    {
+        "title": "food",
+        "category": "Groceries",
+        "amount": "500",
+        "city": "Kyiv"
+    },
+    {
+        "title": "",
+        "category": "Transport",
+        "amount": "300",
+        "city": "Lviv"
+    },
+    {
+        "title": "Taxi",
+        "category": "Transport",
+        "amount": "not available",
+        "city": "Lviv"
+    },
+    {
+        "title": " Coffee ",
+        "category": "Food",
+        "amount": "120",
+        "city": "Odesa"
+    },
+    {
+        "title": "coffee",
+        "category": "Food",
+        "amount": "120",
+        "city": "Odesa"
+    },
+    {
+        "title": "Internet",
+        "category": "Bills",
+        "amount": "600",
+        "city": "Kyiv"
+    },
+    {
+        "title": "Internet",
+        "category": "Bills",
+        "amount": "600",
+        "city": "Kyiv"
+    },
+    {
+        "title": "Rent",
+        "category": "Housing",
+        "amount": "12000",
+        "city": "Lviv"
+    },
+    {
+        "title": "  Rent  ",
+        "category": "Housing",
+        "amount": "12000",
+        "city": "Lviv"
+    },
+    {
+        "title": "Books",
+        "category": "Education",
+        "amount": "800",
+        "city": "Kharkiv"
+    },
+    {
+        "title": "Games",
+        "category": "Entertainment",
+        "amount": "not specified",
+        "city": "Kharkiv"
+    }
+]

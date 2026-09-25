@@ -52,11 +52,7 @@ def main() -> None:
         print(f"Залишилось: {stats.kept}")
 
         if stats.amount_count:
-            print(
-                f"Сума: min={stats.amount_min} "
-                f"max={stats.amount_max} "
-                f"avg={stats.amount_avg:.2f}"
-            )
+            print(f"Сума: min={stats.amount_min} max={stats.amount_max} avg={stats.amount_avg:.2f}")
 
         for city, count in stats.by_city.most_common():
             print(f" {city}: {count}")

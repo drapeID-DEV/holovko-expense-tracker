@@ -11,4 +11,10 @@ def read_rows(path: Path) -> Iterator[dict]:
 def read_rows_jsonl(path: Path) -> Iterator[dict]:
     with path.open(encoding="utf-8") as file:
         for line in file:
-            yield json.loads(line)
+            if not line.strip():
+                continue
+
+            try:
+                yield json.loads(line)
+            except json.JSONDecodeError:
+                continue

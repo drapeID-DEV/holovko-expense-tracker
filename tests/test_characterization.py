@@ -5,7 +5,7 @@ from expense_tracker.domain.parsing import to_expense
 from expense_tracker.services.pipeline import load_expenses
 
 
-def test_expense_pipeline_output():
+def test_expense_pipeline_output() -> None:
     expenses = load_expenses(Path("data/expenses.json"))
 
     assert len(expenses) == 7
@@ -16,7 +16,7 @@ def test_expense_pipeline_output():
     assert expenses[1].amount is None
 
 
-def test_invalid_amount_becomes_none():
+def test_invalid_amount_becomes_none() -> None:
     expense = to_expense(
         {
             "title": "Taxi",

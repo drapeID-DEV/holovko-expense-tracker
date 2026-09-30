@@ -5,8 +5,8 @@ from expense_tracker.services.pipeline import (
 )
 
 
-def test_invalid_rows_are_counted():
-    rows = [
+def test_invalid_rows_are_counted() -> None:
+    rows: list[dict[str, object]] = [
         {
             "title": "Coffee",
             "category": "Food",
@@ -29,5 +29,5 @@ def test_invalid_rows_are_counted():
     assert stats.invalid == 1
 
 
-def test_batched_splits_tail():
+def test_batched_splits_tail() -> None:
     assert [len(batch) for batch in batched(range(7), 3)] == [3, 3, 1]

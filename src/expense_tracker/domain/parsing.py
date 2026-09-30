@@ -6,10 +6,12 @@ def normalize_title(raw: str) -> str:
 
 
 def parse_amount(raw: object) -> int | None:
-    try:
-        return int(raw)
-    except (TypeError, ValueError):
-        return None
+    if isinstance(raw, (str, int)):
+        try:
+            return int(raw)
+        except ValueError:
+            return None
+    return None
 
 
 def to_expense(row: dict) -> Expense | None:

@@ -3,10 +3,13 @@ from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
 from itertools import islice
 from pathlib import Path
+from typing import TypeVar
+
+from pydantic import ValidationError
 
 from ..domain.models import Expense
-from ..domain.parsing import to_expense
 from ..sources.json_file import read_rows, read_rows_jsonl
+from ..sources.schemas import ExpenseIn
 
 
 @dataclass(slots=True)
@@ -29,15 +32,15 @@ class PipelineStats:
 
 
 def parse_all(
-    rows: Iterable[dict],
+    rows: Iterable[dict[str, object]],
     stats: PipelineStats,
 ) -> Iterator[Expense]:
     for row in rows:
         stats.read += 1
 
-        expense = to_expense(row)
-
-        if expense is None:
+        try:
+            expense = ExpenseIn.model_validate(row).to_domain()
+        except ValidationError:
             stats.invalid += 1
             continue
 
@@ -59,12 +62,14 @@ def deduplicate(
         yield expense
 
 
-def batched(
-    items: Iterable[Expense],
-    size: int,
-) -> Iterator[tuple[Expense, ...]]:
-    iterator = iter(items)
+T = TypeVar("T")
 
+
+def batched(  # noqa: UP047
+    items: Iterable[T],
+    size: int,
+) -> Iterator[tuple[T, ...]]:
+    iterator = iter(items)
     while batch := tuple(islice(iterator, size)):
         yield batch
 

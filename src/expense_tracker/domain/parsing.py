@@ -14,15 +14,29 @@ def parse_amount(raw: object) -> int | None:
     return None
 
 
-def to_expense(row: dict) -> Expense | None:
-    title = row.get("title") or ""
+def to_expense(row: dict[str, object]) -> Expense | None:
+    title = row.get("title")
+    category = row.get("category")
+    amount = row.get("amount")
+    city = row.get("city", "")
 
-    if not title.strip():
+    if not isinstance(title, str):
+        return None
+
+    if not isinstance(category, str):
+        return None
+
+    if not isinstance(city, str):
+        return None
+
+    parsed_amount = parse_amount(amount)
+
+    if not title.strip() or not category.strip():
         return None
 
     return Expense(
         title=normalize_title(title),
-        category=row.get("category", ""),
-        amount=parse_amount(row.get("amount")),
-        city=row.get("city", ""),
+        category=category,
+        amount=parsed_amount,
+        city=city,
     )

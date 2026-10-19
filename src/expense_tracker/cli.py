@@ -1,7 +1,9 @@
 import argparse
+from collections.abc import Iterator
 from itertools import islice
 from pathlib import Path
 
+from .domain.models import Expense
 from .services.pipeline import (
     PipelineStats,
     collect,
@@ -11,7 +13,7 @@ from .services.pipeline import (
 from .sources.json_file import read_rows_jsonl
 
 
-def build_pipeline(path: Path, stats: PipelineStats):
+def build_pipeline(path: Path, stats: PipelineStats) -> Iterator[Expense]:
     rows = read_rows_jsonl(path)
     parsed = parse_all(rows, stats)
     return deduplicate(parsed, stats)

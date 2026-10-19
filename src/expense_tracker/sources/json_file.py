@@ -19,3 +19,13 @@ def read_rows_jsonl(path: Path) -> Iterator[dict[str, Any]]:
                 yield json.loads(line)
             except json.JSONDecodeError:
                 continue
+
+
+class JsonArraySource:
+    name = "json"
+
+    def __init__(self, path: Path) -> None:
+        self.path = path
+
+    def read(self) -> Iterator[dict[str, Any]]:
+        yield from read_rows(self.path)

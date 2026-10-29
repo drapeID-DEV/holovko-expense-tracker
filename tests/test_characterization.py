@@ -3,10 +3,11 @@ from pathlib import Path
 from expense_tracker.domain.models import Expense
 from expense_tracker.domain.parsing import to_expense
 from expense_tracker.services.pipeline import load_expenses
+from expense_tracker.sources.json_file import JsonArraySource
 
 
 def test_expense_pipeline_output() -> None:
-    expenses = load_expenses(Path("data/expenses.json"))
+    expenses = load_expenses(JsonArraySource(Path("data/expenses.json")))
 
     assert len(expenses) == 7
     assert expenses[0].title == "food"

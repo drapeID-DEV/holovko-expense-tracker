@@ -7,7 +7,7 @@ requires-python = ">=3.12"
 dependencies = ["pydantic", "pydantic-settings"]
 
 [project.optional-dependencies]
-dev = ["ruff", "pytest", "pre-commit", "mypy"]
+dev = ["ruff", "pytest", "pre-commit", "mypy", "import-linter"]
 
 [project.scripts]
 expense-tracker = "expense_tracker.cli:main"
@@ -25,3 +25,25 @@ python_version = "3.12"
 strict = true
 show_error_codes = true
 warn_unused_ignores = true
+
+[tool.importlinter]
+root_package = "expense_tracker"
+
+[[tool.importlinter.contracts]]
+name = "Domain is independent"
+type = "forbidden"
+source_modules = ["expense_tracker.domain"]
+forbidden_modules = [
+    "expense_tracker.services",
+    "expense_tracker.sources",
+    "expense_tracker.cli",
+]
+
+[[tool.importlinter.contracts]]
+name = "Services do not know adapters"
+type = "forbidden"
+source_modules = ["expense_tracker.services"]
+forbidden_modules = [
+    "expense_tracker.sources",
+    "expense_tracker.cli",
+]

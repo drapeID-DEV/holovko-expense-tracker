@@ -7,7 +7,14 @@ requires-python = ">=3.12"
 dependencies = ["pydantic", "pydantic-settings"]
 
 [project.optional-dependencies]
-dev = ["ruff", "pytest", "pre-commit", "mypy", "import-linter"]
+dev = [
+    "ruff",
+    "pytest",
+    "pytest-cov",
+    "pre-commit",
+    "mypy",
+    "import-linter",
+]
 
 [project.scripts]
 expense-tracker = "expense_tracker.cli:main"
@@ -47,3 +54,7 @@ forbidden_modules = [
     "expense_tracker.sources",
     "expense_tracker.cli",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --cov=expense_tracker --cov-report=term-missing --cov-fail-under=70"

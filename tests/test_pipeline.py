@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from itertools import islice
 from typing import Any
 
 from expense_tracker.services.pipeline import (
@@ -7,6 +8,7 @@ from expense_tracker.services.pipeline import (
     batched,
     parse_all,
 )
+from tests.conftest import FakeSource
 
 
 def test_invalid_rows_are_counted() -> None:
@@ -35,15 +37,6 @@ def test_invalid_rows_are_counted() -> None:
 
 def test_batched_splits_tail() -> None:
     assert [len(batch) for batch in batched(range(7), 3)] == [3, 3, 1]
-
-
-class FakeSource:
-    def __init__(self, name: str, rows: list[dict[str, Any]]) -> None:
-        self.name = name
-        self.rows = rows
-
-    def read(self) -> Iterator[dict[str, Any]]:
-        yield from self.rows
 
 
 def test_pipeline_accepts_multiple_sources() -> None:
@@ -79,3 +72,24 @@ def test_pipeline_deduplicates_across_sources() -> None:
     assert len(expenses) == 1
     assert pipeline.stats.duplicates == 1
     assert pipeline.stats.kept == 1
+
+
+def test_batched_returns_nothing_for_empty_input() -> None:
+    assert list(batched([], 3)) == []
+
+
+def test_parse_all_is_lazy(row: dict[str, Any]) -> None:
+    consumed = 0
+
+    def endless() -> Iterator[dict[str, Any]]:
+        nonlocal consumed
+        while True:
+            consumed += 1
+            yield row
+
+    stats = PipelineStats()
+    taken = list(islice(parse_all(endless(), stats), 3))
+
+    assert len(taken) == 3
+    assert consumed == 3
+    assert stats.read == 3

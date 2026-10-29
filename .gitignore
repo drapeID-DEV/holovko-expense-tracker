@@ -10,3 +10,8 @@ __pycache__/
 .idea/
 .vscode/
 data/large.jsonl
+*.egg-info/
+.coverage
+.coverage.*
+htmlcov/
+venv/

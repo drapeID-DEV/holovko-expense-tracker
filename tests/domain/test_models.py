@@ -34,3 +34,17 @@ def test_unknown_amount_is_allowed() -> None:
     expense = Expense("coffee", "Food", None, "Kyiv")
 
     assert expense.amount is None
+
+
+def test_expense_key_contains_title_and_category() -> None:
+    expense = Expense("Coffee", "Food", 100, "Kyiv")
+
+    assert expense.key == ("Coffee", "Food")
+
+
+def test_has_amount_reflects_whether_amount_is_known() -> None:
+    known = Expense("Coffee", "Food", 100, "Kyiv")
+    unknown = Expense("Taxi", "Transport", None, "Lviv")
+
+    assert known.has_amount is True
+    assert unknown.has_amount is False

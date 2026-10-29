@@ -63,3 +63,28 @@ def test_to_domain_returns_expense() -> None:
     assert domain_expense.category == "Food"
     assert domain_expense.amount == 100
     assert domain_expense.city == "Kyiv"
+
+
+@pytest.mark.parametrize(
+    ("raw_amount", "expected"),
+    [
+        ("1500", 1500),
+        (1500, 1500),
+        ("not specified", None),
+        (None, None),
+    ],
+)
+def test_amount_is_parsed(
+    raw_amount: int | str | None,
+    expected: int | None,
+) -> None:
+    expense = ExpenseIn.model_validate(
+        {
+            "title": "Coffee",
+            "category": "Food",
+            "amount": raw_amount,
+            "city": "Kyiv",
+        }
+    )
+
+    assert expense.amount == expected

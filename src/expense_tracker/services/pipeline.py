@@ -1,3 +1,4 @@
+import logging
 from collections import Counter
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
@@ -9,6 +10,8 @@ from pydantic import ValidationError
 from ..domain.models import Expense
 from .ports import Source
 from .schemas import ExpenseIn
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)
@@ -55,6 +58,7 @@ class Pipeline:
     def run(self) -> list[Expense]:
         seen: set[tuple[str, str]] = set()
         expenses: list[Expense] = []
+        logger.info("start processing %d source(s)", len(self.sources))
 
         for source in self.sources:
             for row in source.read():
@@ -63,8 +67,9 @@ class Pipeline:
 
                 try:
                     expense = ExpenseIn.model_validate(row).to_domain()
-                except ValidationError:
+                except ValidationError as exc:
                     self.stats.invalid += 1
+                    logger.debug("skip row: %d validation errors", exc.error_count())
                     continue
 
                 if expense.key in seen:
@@ -74,6 +79,15 @@ class Pipeline:
                 seen.add(expense.key)
                 expenses.append(expense)
                 self._collect(expense)
+
+        logger.info(
+            "done: kept %d, invalid %d, duplicates %d",
+            self.stats.kept,
+            self.stats.invalid,
+            self.stats.duplicates,
+        )
+        if self.stats.invalid:
+            logger.warning("skipped %d invalid rows", self.stats.invalid)
 
         return expenses
 

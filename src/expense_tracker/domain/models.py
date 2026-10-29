@@ -21,3 +21,8 @@ class Expense:
     @property
     def key(self) -> tuple[str, str]:
         return self.title, self.category
+
+    @property
+    def has_amount(self) -> bool:
+        """Return whether the expense amount is known."""
+        return self.amount is not None
